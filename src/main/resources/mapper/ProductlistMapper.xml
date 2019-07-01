@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.erpSys.main.mapper.ProductlistMapper">
+	<resultMap id="BaseResultMap"
+		type="com.erpSys.main.model.Productlist">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="salesorderid" property="salesorderid"
+			jdbcType="INTEGER" />
+		<result column="commodityId" property="commodityid"
+			jdbcType="INTEGER" />
+		<result column="commodityMath" property="commoditymath"
+			jdbcType="INTEGER" />
+		<result column="commodityprice" property="commodityprice" jdbcType="DOUBLE" />
+	</resultMap>
+
+	<resultMap id="commlist"
+		type="com.erpSys.main.model.Productlist">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="salesorderid" property="salesorderid"
+			jdbcType="INTEGER" />
+		<result column="commodityId" property="commodityid"
+			jdbcType="INTEGER" />
+		<result column="commodityMath" property="commoditymath"
+			jdbcType="INTEGER" />
+		<result column="price" property="price" jdbcType="DOUBLE" />
+		<association property="commodity"
+			javaType="com.erpSys.main.model.Commodity">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="commodityName" property="commodityname"
+				jdbcType="VARCHAR" />
+			<result column="inventory" property="inventory"
+				jdbcType="INTEGER" />
+			<result column="classify" property="classify"
+				jdbcType="VARCHAR" />
+			<result column="commodityprice" property="commodityprice" jdbcType="DOUBLE" />
+			<result column="InputTime" property="inputtime"
+				jdbcType="TIMESTAMP" />
+		</association>
+	</resultMap>
+
+	<select id="Selectcommditylist" resultMap="commlist">
+		SELECT
+		pr.*,c.* FROM
+		`salesorder` AS sa
+		INNER JOIN
+		`productlist` AS pr ON pr.salesorderid =
+		sa.commodityid
+		INNER JOIN
+		`commodity` AS c ON pr.commodityId = c.id
+		and pr.salesorderid = #{salesorderid}
+	</select>
+
+</mapper>

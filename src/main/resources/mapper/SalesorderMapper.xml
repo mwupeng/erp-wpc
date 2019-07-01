@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.erpSys.main.mapper.SalesorderMapper">
+	<resultMap id="BaseResultMap"
+		type="com.erpSys.main.model.Salesorder">
+		<id column="salesorderid" property="salesorderid"
+			jdbcType="INTEGER" />
+		<result column="creation" property="creation"
+			jdbcType="VARCHAR" />
+		<result column="creationName" property="creationname"
+			jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="states" property="states" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="userId" property="userid" jdbcType="INTEGER" />
+		<result column="clientId" property="clientid"
+			jdbcType="INTEGER" />
+		<result column="commodityId" property="commodityid"
+			jdbcType="VARCHAR" />
+		<result column="advance" property="advance" jdbcType="DOUBLE" />
+		<result column="deliveryId" property="deliveryid"
+			jdbcType="INTEGER" />
+		<result column="costId" property="costid" jdbcType="INTEGER" />
+		<result column="prices" property="prices" jdbcType="DOUBLE" />
+		<result column="shippingAddress" property="shippingaddress"
+			jdbcType="INTEGER" />
+		<result column="creationTime" property="creationtime"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap id="SalesorderMap"
+		type="com.erpSys.main.model.Salesorder">
+		<id column="salesorderid" property="salesorderid"
+			jdbcType="INTEGER" />
+		<result column="creation" property="creation"
+			jdbcType="VARCHAR" />
+		<result column="creationName" property="creationname"
+			jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="states" property="states" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="userId" property="userid" jdbcType="INTEGER" />
+		<result column="clientId" property="clientid"
+			jdbcType="INTEGER" />
+		<result column="commodityId" property="commodityid"
+			jdbcType="VARCHAR" />
+		<result column="advance" property="advance" jdbcType="DOUBLE" />
+		<result column="deliveryId" property="deliveryid"
+			jdbcType="INTEGER" />
+		<result column="costId" property="costid" jdbcType="INTEGER" />
+		<result column="prices" property="prices" jdbcType="DOUBLE" />
+		<result column="shippingAddress" property="shippingaddress"
+			jdbcType="INTEGER" />
+		<result column="creationTime" property="creationtime"
+			jdbcType="TIMESTAMP" />
+		<association property="user"
+			javaType="com.erpSys.main.model.User">
+			<result column="loginname" property="loginname"
+				jdbcType="VARCHAR" />
+		</association>
+		<association property="client"
+			javaType="com.erpSys.main.model.Client">
+			<result column="company" property="company" jdbcType="VARCHAR" />
+			<result column="contact" property="contact" jdbcType="VARCHAR" />
+			<association property="clientaddress"
+				javaType="com.erpSys.main.model.Clientaddress">
+				<id column="id" property="id" jdbcType="INTEGER" />
+				<result column="creationTime" property="creationtime"
+					jdbcType="TIMESTAMP" />
+				<result column="creation" property="creation"
+					jdbcType="VARCHAR" />
+				<result column="creatioName" property="creationame"
+					jdbcType="VARCHAR" />
+				<result column="status" property="status" jdbcType="VARCHAR" />
+				<result column="state" property="state" jdbcType="INTEGER" />
+				<result column="remark" property="remark" jdbcType="VARCHAR" />
+				<result column="clientId" property="clientid"
+					jdbcType="INTEGER" />
+				<result column="address" property="address"
+					jdbcType="VARCHAR" />
+				<result column="consignee" property="consignee"
+					jdbcType="VARCHAR" />
+				<result column="consigneePhone" property="consigneephone"
+					jdbcType="VARCHAR" />
+			</association>
+		</association>
+		<association property="productlist"
+			javaType="com.erpSys.main.model.Productlist">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="salesorderid" property="salesorderid"
+				jdbcType="INTEGER" />
+			<result column="commodityId" property="commodityid"
+				jdbcType="INTEGER" />
+			<result column="commodityMath" property="commoditymath"
+				jdbcType="INTEGER" />
+			<result column="price" property="price" jdbcType="DOUBLE" />
+
+		</association>
+	</resultMap>
+
+
+
+	<select id="SelectCUList" resultMap="SalesorderMap">
+		SELECT u.loginname , c.*
+		,sa.*,
+		cl.* FROM
+		`salesorder` AS sa
+		INNER JOIN USER AS u ON
+		sa.userid =
+		u.id
+		INNER JOIN
+		CLIENT AS c ON sa.clientId = c.id
+		INNER JOIN
+		clientaddress
+		AS
+		cl ON
+		sa.shippingAddress = cl.id
+		WHERE sa.`status` = 'A'
+	</select>
+
+	<select id="SelectByIdcommlist" resultMap="SalesorderMap">
+		SELECT u.loginname ,
+		c.*
+		,sa.*,
+		cl.* FROM
+		`salesorder` AS sa
+		INNER JOIN USER AS u ON
+		sa.userid =
+		u.id
+		INNER JOIN
+		CLIENT AS c ON sa.clientId = c.id
+		INNER JOIN
+		clientaddress
+		AS
+		cl ON
+		sa.shippingAddress = cl.id
+		AND sa.clientid =
+		#{clientid}
+		WHERE sa.`status` = 'A'
+	</select>
+
+	<insert id="InserDb"
+		parameterType="com.erpSys.main.model.Salesorder"
+		useGeneratedKeys="true" keyProperty="salesorderid">
+		<selectKey keyProperty='salesorderid' resultType='int' order='AFTER'>
+			select LAST_INSERT_ID();
+		</selectKey>
+		INSERT
+		INTO
+		salesorder(creation,creationName,userId,clientId,advance,shippingAddress)
+		VALUES
+		(#{creation},#{creationname},#{userid},#{clientid},#{advance},#{shippingaddress})
+	</insert>
+
+
+</mapper>

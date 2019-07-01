@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.erpSys.main.mapper.UserMapper">
+	<resultMap id="BaseResultMap"
+		type="com.erpSys.main.model.User">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="loginname" property="loginname"
+			jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="password" property="password"
+			jdbcType="VARCHAR" />
+		<result column="salt" property="salt" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="TINYINT" />
+		<result column="age" property="age" jdbcType="TINYINT" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+		<result column="organizationId" property="organizationid"
+			jdbcType="VARCHAR" />
+		<result column="roleId" property="roleid" jdbcType="INTEGER" />
+		<result column="createTime" property="createtime"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap id="RoleResultMap"
+		type="com.erpSys.main.model.User">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="loginname" property="loginname"
+			jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="password" property="password"
+			jdbcType="VARCHAR" />
+		<result column="salt" property="salt" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="TINYINT" />
+		<result column="age" property="age" jdbcType="TINYINT" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+		<result column="organizationId" property="organizationid"
+			jdbcType="VARCHAR" />
+		<result column="roleId" property="roleid" jdbcType="INTEGER" />
+		<result column="createTime" property="createtime"
+			jdbcType="TIMESTAMP" />
+
+		<association property="powerlist"
+			javaType="com.erpSys.main.model.Userpower">
+
+			<result column="userpower" property="userpower" />
+
+		</association>
+	</resultMap>
+
+	<select id="selectByPower" resultMap="RoleResultMap">
+		SELECT
+		u.id,u.loginname,u.name,u.sex,u.age,u.phone,u.organizationId,u.createTime,
+		up.userpower FROM USER AS u
+		INNER JOIN userpower AS up ON userId =
+		roleId
+	</select>
+</mapper>

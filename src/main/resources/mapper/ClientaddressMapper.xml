@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.erpSys.main.mapper.ClientaddressMapper">
+	<resultMap id="BaseResultMap"
+		type="com.erpSys.main.model.Clientaddress">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="creationTime" property="creationtime"
+			jdbcType="TIMESTAMP" />
+		<result column="creation" property="creation"
+			jdbcType="VARCHAR" />
+		<result column="creatioName" property="creationame"
+			jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="clientId" property="clientid"
+			jdbcType="INTEGER" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="consignee" property="consignee"
+			jdbcType="VARCHAR" />
+		<result column="consigneePhone" property="consigneephone"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="addressMap"
+		type="com.erpSys.main.model.Clientaddress">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="creationTime" property="creationtime"
+			jdbcType="TIMESTAMP" />
+		<result column="creation" property="creation"
+			jdbcType="VARCHAR" />
+		<result column="creatioName" property="creationame"
+			jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="clientId" property="clientid"
+			jdbcType="INTEGER" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="consignee" property="consignee"
+			jdbcType="VARCHAR" />
+		<result column="consigneePhone" property="consigneephone"
+			jdbcType="VARCHAR" />
+		<association property="client"
+			javaType="com.erpSys.main.model.Client">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="contact" property="contact" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<select id="selectClient" resultMap="addressMap">
+		SELECT
+		ca.`id`,ca.`creationTime`,ca.`creation`,ca.`creatioName`,ca.`status`,ca.`state`,ca.`remark`,ca.`clientId`,ca.`address`,ca.`consignee`,ca.`consigneePhone`,c.id,c.`contact`
+		FROM `clientaddress` AS ca
+		INNER JOIN `client` AS c ON ca.`clientId` =
+		c.id
+	</select>
+	<select id="selectClientByid" resultMap="addressMap">
+		SELECT
+		ca.id,ca.clientid,ca.consignee,ca.address,ca.consigneePhone,c.id,c.contact
+		FROM `clientaddress` AS ca
+		INNER JOIN `client` AS c ON ca.clientid = c.id AND c.id = #{id}
+	</select>
+
+
+</mapper>
